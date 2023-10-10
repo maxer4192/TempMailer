@@ -11,6 +11,7 @@ services:
       - 587:587
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - ./emails:/emails
     env_file:
       - .env
     networks:
@@ -21,6 +22,8 @@ services:
     container_name: db
     hostname: db
     restart: always
+    volumes:
+      - ./emails:/var/lib/mysql-files
     environment:
       MYSQL_ROOT_PASSWORD: "google"
       MYSQL_DATABASE: "mail"
