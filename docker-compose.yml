@@ -24,6 +24,7 @@ services:
     restart: always
     volumes:
       - ./emails:/var/lib/mysql-files
+      - ./initdb:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: "google"
       MYSQL_DATABASE: "mail"
