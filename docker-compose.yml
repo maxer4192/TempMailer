@@ -1,7 +1,7 @@
 version: '3'
 services:
   vsmtp:
-    image: registry.sendinghttpnot.love/vsmtp
+    image: registry.sendinghttpnot.love/vsmtpd
     container_name: vsmtp
     hostname: vsmtp
     restart: always
@@ -18,7 +18,7 @@ services:
       vw:
         ipv4_address: 10.10.10.9
   db:
-    image: mariadb
+    image: mysql:8.0
     container_name: db
     hostname: db
     restart: always
@@ -52,6 +52,9 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
     env_file:
       - .env
+    networks:
+      vw:
+        ipv4_address: 10.10.10.12
 
 networks:
   vw:

@@ -1,4 +1,4 @@
 {$DOMAIN}:443 {
         tls /etc/letsencrypt/live/{$DOMAIN}/fullchain.pem /etc/letsencrypt/live/{$DOMAIN}/privkey.pem
-        reverse_proxy emailaccessapi:8000
+        reverse_proxy http://10.10.10.11:8000
 }
