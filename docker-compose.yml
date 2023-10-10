@@ -1,0 +1,58 @@
+version: '3'
+services:
+  vsmtp:
+    image: registry.sendinghttpnot.love/vsmtp
+    container_name: vsmtp
+    hostname: vsmtp
+    restart: always
+    ports:
+      - 25:25
+      - 465:465
+      - 587:587
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    env_file:
+      - .env
+    networks:
+      vw:
+        ipv4_address: 10.10.10.9
+  db:
+    image: mariadb
+    container_name: db
+    hostname: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "google"
+      MYSQL_DATABASE: "mail"
+    networks:
+      vw:
+        ipv4_address: 10.10.10.10
+  emailaccessapi:
+    image: registry.sendinghttpnot.love/emailaccessapi
+    container_name: emailaccessapi
+    hostname: emailaccessapi
+    restart: always
+    networks:
+      vw:
+        ipv4_address: 10.10.10.11
+  proxy:
+    image: caddy:2
+    container_name: proxy
+    hostname: proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    env_file:
+      - .env
+
+networks:
+  vw:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
+          gateway: 10.10.10.1
